@@ -8,6 +8,7 @@ jobs:
     executor:
       name: win/default
     steps:
+      - checkout
       - run:
          command: MSBuild.exe -p:Configuration=Release -p:Platform=x64 windows/game-engine/game-engine.vcxproj
          shell: cmd.exe
