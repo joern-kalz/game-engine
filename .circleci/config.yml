@@ -10,5 +10,8 @@ jobs:
     steps:
       - checkout
       - run:
-         command: MSBuild.exe -restore -p:Configuration=Release -p:Platform=x64 windows/game-engine/game-engine.vcxproj
+         command: nuget.exe restore windows\game-engine.sln
+         shell: cmd.exe
+      - run:
+         command: MSBuild.exe -p:Configuration=Release -p:Platform=x64 windows\game-engine\game-engine.vcxproj
          shell: cmd.exe
