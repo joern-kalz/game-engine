@@ -5,9 +5,9 @@
     <CppWinRTOptimized>true</CppWinRTOptimized>
     <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
     <MinimalCoreWin>true</MinimalCoreWin>
-    <ProjectGuid>{9abdd5fa-0ec2-4bb9-ad9c-42a0947b0454}</ProjectGuid>
-    <ProjectName>game-engine</ProjectName>
-    <RootNamespace>game_engine</RootNamespace>
+    <ProjectGuid>{0dab9d1c-432c-4c4a-98b1-0af706dde4f2}</ProjectGuid>
+    <ProjectName>windows-runtime</ProjectName>
+    <RootNamespace>windows_runtime</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
     <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
     <AppContainerApplication>true</AppContainerApplication>

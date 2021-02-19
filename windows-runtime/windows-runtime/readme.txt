@@ -1,5 +1,5 @@
 ========================================================================
-    C++/WinRT game-engine Project Overview
+    C++/WinRT windows-runtime Project Overview
 ========================================================================
 
 This project demonstrates how to create a Universal Windows App (UWP) 

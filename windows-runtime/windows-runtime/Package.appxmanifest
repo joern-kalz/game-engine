@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
   <Identity
-    Name="3bbd3353-964f-4cb9-a22d-e5db095f3464"
+    Name="b578817c-fb3d-46d8-a730-b28650b35dcb"
     Publisher="CN=Joern"
     Version="1.0.0.0" />
-  <mp:PhoneIdentity PhoneProductId="3bbd3353-964f-4cb9-a22d-e5db095f3464" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="b578817c-fb3d-46d8-a730-b28650b35dcb" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
   <Properties>
-    <DisplayName>game-engine</DisplayName>
+    <DisplayName>windows-runtime</DisplayName>
     <PublisherDisplayName>Joern</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -17,8 +17,8 @@
     <Resource Language="x-generate" />
   </Resources>
   <Applications>
-    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="game_engine.App">
-      <uap:VisualElements DisplayName="game-engine" Description="A project for a C++/WinRT Universal Windows Platform (UWP) app directly implementing CoreApplication"
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="windows_runtime.App">
+      <uap:VisualElements DisplayName="windows-runtime" Description="A project for a C++/WinRT Universal Windows Platform (UWP) app directly implementing CoreApplication"
         Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" BackgroundColor="transparent">
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
