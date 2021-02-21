@@ -11,25 +11,13 @@ IFrameworkView AppAdapter::CreateView()
     return *this;
 }
 
-void AppAdapter::Initialize(CoreApplicationView const&)
+void AppAdapter::Initialize(CoreApplicationView const& application_view)
 {
-}
+    application_view.Activated({ this, &AppAdapter::OnActivated });
+    CoreApplication::Suspending({ this, &AppAdapter::OnSuspending });
+    CoreApplication::Resuming({ this, &AppAdapter::OnResuming });
 
-void AppAdapter::Load(hstring const&)
-{
-}
-
-void AppAdapter::Uninitialize()
-{
-}
-
-void AppAdapter::Run()
-{
-    CoreWindow window = CoreWindow::GetForCurrentThread();
-    window.Activate();
-
-    CoreDispatcher dispatcher = window.Dispatcher();
-    dispatcher.ProcessEvents(CoreProcessEventsOption::ProcessUntilQuit);
+    app_->OnInitialize();
 }
 
 void AppAdapter::SetWindow(CoreWindow const& window)
@@ -43,6 +31,42 @@ void AppAdapter::SetWindow(CoreWindow const& window)
     window.PointerReleased([&](IInspectable const&, PointerEventArgs const& args) {
         app_->OnPointerReleased(ConvertToPointerEvent(args));
     });
+}
+
+void AppAdapter::Load(hstring const&)
+{
+}
+
+void AppAdapter::Run()
+{
+    CoreWindow window = CoreWindow::GetForCurrentThread();
+    CoreDispatcher dispatcher = window.Dispatcher();
+    dispatcher.ProcessEvents(CoreProcessEventsOption::ProcessUntilQuit);
+}
+
+void AppAdapter::Uninitialize()
+{
+}
+
+void AppAdapter::OnActivated(CoreApplicationView const&, IActivatedEventArgs const&)
+{
+    CoreWindow window = CoreWindow::GetForCurrentThread();
+    window.Activate();
+}
+
+winrt::fire_and_forget AppAdapter::OnSuspending(IInspectable const&, SuspendingEventArgs const& args)
+{
+    auto lifetime = get_strong();
+    SuspendingDeferral deferral = args.SuspendingOperation().GetDeferral();
+    co_await winrt::resume_background();
+
+    app_->OnSuspending();
+
+    deferral.Complete();
+}
+
+void AppAdapter::OnResuming(IInspectable const&, IInspectable const&)
+{
 }
 
 App::PointerEvent AppAdapter::ConvertToPointerEvent(PointerEventArgs args)

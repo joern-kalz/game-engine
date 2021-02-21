@@ -11,6 +11,15 @@ void App::OnInitialize()
 	render_api_->Initialize();
 }
 
+void App::OnSuspending()
+{
+	render_api_->TrimResourcesOnSuspending();
+}
+
+void App::OnResuming()
+{
+}
+
 void App::OnPointerPressed(PointerEvent)
 {
 }

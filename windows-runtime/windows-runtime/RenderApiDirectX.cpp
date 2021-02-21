@@ -26,6 +26,14 @@ void RenderApiDirectX::Initialize()
     context_ = d3d11context.as<ID3D11DeviceContext3>();
 }
 
+void RenderApiDirectX::TrimResourcesOnSuspending()
+{
+    winrt::com_ptr<IDXGIDevice3> dxgiDevice;
+    dxgiDevice = device_.as<IDXGIDevice3>();
+
+    dxgiDevice->Trim();
+}
+
 bool RenderApiDirectX::IsDebugLayerSupported()
 {
     HRESULT hr = D3D11CreateDevice(

@@ -5,6 +5,7 @@ class RenderApiDirectX :
 {
 public:
     virtual void Initialize();
+    virtual void TrimResourcesOnSuspending();
 
 private:
     bool IsDebugLayerSupported();

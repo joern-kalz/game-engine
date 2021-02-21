@@ -7,6 +7,7 @@
 class RenderApiMock : public RenderApi {
 public:
 	MOCK_METHOD(void, Initialize, (), (override));
+	MOCK_METHOD(void, TrimResourcesOnSuspending, (), (override));
 };
 
 TEST(AppTest, shouldInitializeRenderApi) {
@@ -15,4 +16,12 @@ TEST(AppTest, shouldInitializeRenderApi) {
 	EXPECT_CALL(*renderApiMock, Initialize());
 
 	app.OnInitialize();
+}
+
+TEST(AppTest, shouldTrimResourcesWhenSuspending) {
+	auto renderApiMock = make_shared<RenderApiMock>();
+	App app(renderApiMock);
+	EXPECT_CALL(*renderApiMock, TrimResourcesOnSuspending());
+
+	app.OnSuspending();
 }

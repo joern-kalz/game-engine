@@ -14,6 +14,8 @@ public:
 	App(shared_ptr<RenderApi> render_api);
 
 	void OnInitialize();
+	void OnSuspending();
+	void OnResuming();
 	void OnPointerPressed(PointerEvent pointer_event);
 	void OnPointerMoved(PointerEvent pointer_event);
 	void OnPointerReleased(PointerEvent pointer_event);
