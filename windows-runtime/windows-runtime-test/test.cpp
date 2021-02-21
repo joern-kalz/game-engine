@@ -1,8 +1,18 @@
 #include "pch.h"
 
+#include "gmock/gmock.h"
+
 #include "../windows-runtime/App.h"
 
-TEST(AppTest, shouldNotThrowWhenPointerMoved) {
-	App app;
-	app.onPointerMoved(App::PointerEvent{ 0, 0 });
+class RenderApiMock : public RenderApi {
+public:
+	MOCK_METHOD(void, Initialize, (), (override));
+};
+
+TEST(AppTest, shouldInitializeRenderApi) {
+	auto renderApiMock = make_shared<RenderApiMock>();
+	App app(renderApiMock);
+	EXPECT_CALL(*renderApiMock, Initialize());
+
+	app.OnInitialize();
 }

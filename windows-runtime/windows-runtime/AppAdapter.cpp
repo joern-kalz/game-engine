@@ -1,6 +1,11 @@
 #include "pch.h"
 #include "AppAdapter.h"
 
+AppAdapter::AppAdapter(shared_ptr<App> app) :
+    app_(app)
+{
+}
+
 IFrameworkView AppAdapter::CreateView()
 {
     return *this;
@@ -30,17 +35,17 @@ void AppAdapter::Run()
 void AppAdapter::SetWindow(CoreWindow const& window)
 {
     window.PointerReleased([&](IInspectable const&, PointerEventArgs const& args) {
-        app.onPointerReleased(convertToPointerEvent(args));
+        app_->OnPointerReleased(ConvertToPointerEvent(args));
     });
     window.PointerMoved([&](IInspectable const&, PointerEventArgs const& args) {
-        app.onPointerMoved(convertToPointerEvent(args));
+        app_->OnPointerMoved(ConvertToPointerEvent(args));
     });
     window.PointerReleased([&](IInspectable const&, PointerEventArgs const& args) {
-        app.onPointerReleased(convertToPointerEvent(args));
+        app_->OnPointerReleased(ConvertToPointerEvent(args));
     });
 }
 
-App::PointerEvent AppAdapter::convertToPointerEvent(PointerEventArgs args)
+App::PointerEvent AppAdapter::ConvertToPointerEvent(PointerEventArgs args)
 {
     float2 point = args.CurrentPoint().Position();
     return App::PointerEvent{ point.x, point.y };

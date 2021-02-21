@@ -1,14 +1,24 @@
 #include "pch.h"
 #include "App.h"
 
-void App::onPointerPressed(PointerEvent pointerEvent)
+App::App(shared_ptr<RenderApi> render_api) :
+	render_api_(render_api)
 {
 }
 
-void App::onPointerMoved(PointerEvent pointerEvent)
+void App::OnInitialize()
+{
+	render_api_->Initialize();
+}
+
+void App::OnPointerPressed(PointerEvent)
 {
 }
 
-void App::onPointerReleased(PointerEvent pointerEvent)
+void App::OnPointerMoved(PointerEvent)
+{
+}
+
+void App::OnPointerReleased(PointerEvent)
 {
 }
