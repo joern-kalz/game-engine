@@ -1,19 +1,26 @@
 #include "pch.h"
 #include "App.h"
 
-App::App(shared_ptr<RenderApi> render_api) :
-	render_api_(render_api)
+App::App(shared_ptr<GraphicsFacade> graphics_facade) : 
+	graphics_facade_(graphics_facade),
+	resources_loaded_(false),
+	textures_loaded_(false)
 {
 }
 
 void App::OnInitialize()
 {
-	render_api_->Initialize();
+	graphics_facade_->Initialize();
+}
+
+void App::OnLoad()
+{
+	graphics_facade_->LoadBasicResources([&]() { resources_loaded_ = true; });
 }
 
 void App::OnSuspending()
 {
-	render_api_->TrimResourcesOnSuspending();
+	graphics_facade_->TrimResourcesOnSuspending();
 }
 
 void App::OnResuming()

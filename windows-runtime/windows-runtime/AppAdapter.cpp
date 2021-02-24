@@ -35,6 +35,7 @@ void AppAdapter::SetWindow(CoreWindow const& window)
 
 void AppAdapter::Load(hstring const&)
 {
+    OnLoad();
 }
 
 void AppAdapter::Run()
@@ -46,6 +47,11 @@ void AppAdapter::Run()
 
 void AppAdapter::Uninitialize()
 {
+}
+
+void AppAdapter::OnLoad()
+{
+    app_->OnLoad();
 }
 
 void AppAdapter::OnActivated(CoreApplicationView const&, IActivatedEventArgs const&)
@@ -67,6 +73,7 @@ winrt::fire_and_forget AppAdapter::OnSuspending(IInspectable const&, SuspendingE
 
 void AppAdapter::OnResuming(IInspectable const&, IInspectable const&)
 {
+    app_->OnResuming();
 }
 
 App::PointerEvent AppAdapter::ConvertToPointerEvent(PointerEventArgs args)

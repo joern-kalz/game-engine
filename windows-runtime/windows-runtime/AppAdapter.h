@@ -28,6 +28,7 @@ public:
     void Uninitialize();
 
 private:
+    void OnLoad();
     void OnActivated(CoreApplicationView const&, IActivatedEventArgs const&);
     winrt::fire_and_forget OnSuspending(IInspectable const&, SuspendingEventArgs const& args);
     void OnResuming(IInspectable const&, IInspectable const&);
