@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "GraphicsFacade.h"
+#include "../Graphics/GraphicsFacade.h"
 
 using namespace std;
 

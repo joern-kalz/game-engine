@@ -2,9 +2,9 @@
 
 #include <memory>
 
-#include "GraphicsFacade.h"
-#include "AppAdapter.h"
-#include "GraphicsLibraryImpl.h"
+#include "App/AppAdapter.h"
+#include "Graphics/GraphicsFacade.h"
+#include "Graphics/GraphicsLibraryImpl.h"
 
 using namespace std;
 

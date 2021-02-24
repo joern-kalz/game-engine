@@ -107,11 +107,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="App.h" />
-    <ClInclude Include="AppAdapter.h" />
-    <ClInclude Include="GraphicsLibrary.h" />
-    <ClInclude Include="GraphicsFacade.h" />
-    <ClInclude Include="GraphicsLibraryImpl.h" />
+    <ClInclude Include="App\App.h" />
+    <ClInclude Include="App\AppAdapter.h" />
+    <ClInclude Include="Graphics\GraphicsFacade.h" />
+    <ClInclude Include="Graphics\GraphicsLibrary.h" />
+    <ClInclude Include="Graphics\GraphicsLibraryImpl.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -129,10 +129,10 @@
     <Image Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="App.cpp" />
-    <ClCompile Include="AppAdapter.cpp" />
-    <ClCompile Include="GraphicsFacade.cpp" />
-    <ClCompile Include="GraphicsLibraryImpl.cpp" />
+    <ClCompile Include="App\App.cpp" />
+    <ClCompile Include="App\AppAdapter.cpp" />
+    <ClCompile Include="Graphics\GraphicsFacade.cpp" />
+    <ClCompile Include="Graphics\GraphicsLibraryImpl.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
