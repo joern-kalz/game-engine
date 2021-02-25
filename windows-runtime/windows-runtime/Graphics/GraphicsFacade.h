@@ -3,11 +3,11 @@
 #include <functional>
 #include <memory>
 
-#include "GraphicsLibrary.h"
+#include "DirectXFactory.h"
 
 class GraphicsFacade {
 public:
-    GraphicsFacade(std::shared_ptr<GraphicsLibrary> graphicsLibrary);
+    GraphicsFacade(std::shared_ptr<DirectXFactory> direct_x_factory);
     void Initialize();
     void TrimResourcesOnSuspending();
     void LoadBasicResources(std::function<void()> callback);
@@ -20,13 +20,13 @@ private:
     void CreateSampler();
     void CreateVertexBuffer();
 
-    std::shared_ptr<GraphicsLibrary> library_;
+    std::shared_ptr<DirectXFactory> direct_x_factory_;
 
     winrt::com_ptr<ID3D11Device3> device_;
     D3D_FEATURE_LEVEL feature_level_{};
     winrt::com_ptr<ID3D11DeviceContext3> context_;
 
     winrt::com_ptr<ID3D11SamplerState> sampler_{ nullptr };
-    winrt::com_ptr<ID3D11Buffer>  m_vertexBuffer;
+    winrt::com_ptr<ID3D11Buffer>  vertex_buffer_;
 };
 

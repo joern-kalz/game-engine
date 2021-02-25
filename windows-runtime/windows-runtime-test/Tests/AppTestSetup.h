@@ -1,11 +1,11 @@
 #pragma once
 
-#include "GraphicsLibraryMock.h"
+#include "DirectXFactoryMock.h"
 #include "../../windows-runtime/App/App.h"
 
 struct AppTestSetup {
-	shared_ptr<GraphicsLibraryMock> graphicsLibrary = make_shared<GraphicsLibraryMock>();
-	shared_ptr<GraphicsFacade> graphicsFacade = make_shared<GraphicsFacade>(graphicsLibrary);
+	shared_ptr<DirectXFactoryMock> direct_x_factory = make_shared<DirectXFactoryMock>();
+	shared_ptr<GraphicsFacade> graphicsFacade = make_shared<GraphicsFacade>(direct_x_factory);
 	shared_ptr<App> app = make_shared<App>(graphicsFacade);
 };
 

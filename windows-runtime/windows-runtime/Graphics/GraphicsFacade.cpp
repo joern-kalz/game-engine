@@ -14,8 +14,8 @@ VERTEX OurVertices[] =
     { -0.45f, -0.5f, 0.0f, 0.0f, 0.0f },
 };
 
-GraphicsFacade::GraphicsFacade(std::shared_ptr<GraphicsLibrary> graphicsLibrary) :
-    library_(graphicsLibrary)
+GraphicsFacade::GraphicsFacade(std::shared_ptr<DirectXFactory> direct_x_factory) :
+    direct_x_factory_(direct_x_factory)
 {
 }
 
@@ -40,7 +40,7 @@ void GraphicsFacade::Initialize()
 
 void GraphicsFacade::TrimResourcesOnSuspending()
 {
-    library_->Trim(&device_);
+    device_.as<IDXGIDevice3>()->Trim();
 }
 
 void GraphicsFacade::LoadBasicResources(std::function<void()>)
@@ -53,7 +53,7 @@ void GraphicsFacade::LoadTextures(wchar_t const**, std::function<void()>)
 
 bool GraphicsFacade::IsDebugLayerSupported()
 {
-    HRESULT hr = library_->CreateDevice(
+    HRESULT hr = direct_x_factory_->CreateDevice(
         nullptr,
         D3D_DRIVER_TYPE_NULL,
         0,
@@ -85,7 +85,7 @@ HRESULT GraphicsFacade::CreateDevice(D3D_DRIVER_TYPE type, UINT flags)
     winrt::com_ptr<ID3D11Device> device;
     winrt::com_ptr<ID3D11DeviceContext> context;
 
-    HRESULT hr = library_->CreateDevice(
+    HRESULT hr = direct_x_factory_->CreateDevice(
         nullptr,
         type,
         0,
@@ -93,14 +93,14 @@ HRESULT GraphicsFacade::CreateDevice(D3D_DRIVER_TYPE type, UINT flags)
         featureLevels,
         ARRAYSIZE(featureLevels),
         D3D11_SDK_VERSION,
-        &device,
+        device.put(),
         &feature_level_,
-        &context
+        context.put()
     );
 
     if (SUCCEEDED(hr)) {
-        library_->asDevice3(&device, &device_);
-        library_->asContext3(&context, &context_);
+        device_ = device.as<ID3D11Device3>();
+        context_ = context.as<ID3D11DeviceContext3>();
     }
 
     return hr;
@@ -128,7 +128,7 @@ void GraphicsFacade::CreateSampler()
     sampDesc.MaxLOD = FLT_MAX;
 
     winrt::check_hresult(
-        library_->CreateSamplerState(&device_, &sampDesc, sampler_.put())
+        device_->CreateSamplerState(&sampDesc, sampler_.put())
     );
 }
 
@@ -141,6 +141,6 @@ void GraphicsFacade::CreateVertexBuffer()
     D3D11_SUBRESOURCE_DATA srd = { OurVertices, 0, 0 };
 
     winrt::check_hresult(
-        library_->CreateBuffer(&device_, &bd, &srd, m_vertexBuffer.put())
+        device_->CreateBuffer(&bd, &srd, vertex_buffer_.put())
     );
 }
