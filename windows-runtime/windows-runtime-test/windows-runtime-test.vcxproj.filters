@@ -16,6 +16,7 @@
     <ClCompile Include="Tests\DeviceFactoryTests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="..\packages\gmock.1.10.0\lib\native\src\gtest\src\gtest_main.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
