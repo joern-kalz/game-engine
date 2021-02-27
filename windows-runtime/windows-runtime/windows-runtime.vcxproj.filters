@@ -9,10 +9,13 @@
     <ClCompile Include="App\AppAdapter.cpp">
       <Filter>App</Filter>
     </ClCompile>
-    <ClCompile Include="Graphics\GraphicsFacade.cpp">
+    <ClCompile Include="Graphics\DirectXProxyImpl.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Graphics\GraphicsLibraryImpl.cpp">
+    <ClCompile Include="Graphics\DirectXDevice.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\DirectXDeviceFactory.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
   </ItemGroup>
@@ -24,24 +27,41 @@
     <ClInclude Include="App\AppAdapter.h">
       <Filter>App</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics\GraphicsFacade.h">
+    <ClInclude Include="Graphics\DirectXProxy.h">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics\GraphicsLibrary.h">
+    <ClInclude Include="Graphics\DirectXProxyImpl.h">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics\GraphicsLibraryImpl.h">
+    <ClInclude Include="Graphics\DirectXDevice.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\DirectXDeviceFactory.h">
       <Filter>Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Assets\LockScreenLogo.scale-200.png" />
-    <Image Include="Assets\SplashScreen.scale-200.png" />
-    <Image Include="Assets\Square150x150Logo.scale-200.png" />
-    <Image Include="Assets\Square44x44Logo.scale-200.png" />
-    <Image Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
-    <Image Include="Assets\StoreLogo.png" />
-    <Image Include="Assets\Wide310x150Logo.scale-200.png" />
+    <Image Include="Assets\SplashScreen.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square150x150Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\StoreLogo.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Wide310x150Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\LockScreenLogo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />
@@ -59,6 +79,15 @@
     </Filter>
     <Filter Include="Graphics">
       <UniqueIdentifier>{0a186494-6204-4f56-bcdb-615c2de757ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AssetLoader">
+      <UniqueIdentifier>{39793517-eb28-4f25-979d-512647bbf2ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{308da02d-e873-4955-abf2-00b9ef25730a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{5d0676b3-b148-4d7e-b99e-2024cca7a4d7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
