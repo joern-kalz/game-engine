@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "App.h"
 
-App::App(shared_ptr<GraphicsFacade> graphics_facade) : 
-	graphics_facade_(graphics_facade),
+App::App(shared_ptr<DirectXDeviceFactory> direct_x_device_factory) : 
+	direct_x_device_factory_(direct_x_device_factory),
 	resources_loaded_(false),
 	textures_loaded_(false)
 {
@@ -10,17 +10,17 @@ App::App(shared_ptr<GraphicsFacade> graphics_facade) :
 
 void App::OnInitialize()
 {
-	graphics_facade_->Initialize();
+	direct_x_device_ = direct_x_device_factory_->CreateDirectXDevice();
 }
 
 void App::OnLoad()
 {
-	graphics_facade_->LoadBasicResources([&]() { resources_loaded_ = true; });
+	direct_x_device_->LoadBasicResources([&]() { resources_loaded_ = true; });
 }
 
 void App::OnSuspending()
 {
-	graphics_facade_->TrimResourcesOnSuspending();
+	direct_x_device_->TrimResourcesOnSuspending();
 }
 
 void App::OnResuming()

@@ -1,6 +1,6 @@
 #pragma once
 
-class DirectXFactory {
+class DirectXProxy {
 public:
 	virtual HRESULT CreateDevice(
 		IDXGIAdapter* p_adapter,

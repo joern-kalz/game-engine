@@ -1,12 +1,12 @@
 #pragma once
 
-#include "DirectXFactoryMock.h"
+#include "DirectXProxyMock.h"
 #include "../../windows-runtime/App/App.h"
 
 struct AppTestSetup {
-	shared_ptr<DirectXFactoryMock> direct_x_factory = make_shared<DirectXFactoryMock>();
-	shared_ptr<GraphicsFacade> graphicsFacade = make_shared<GraphicsFacade>(direct_x_factory);
-	shared_ptr<App> app = make_shared<App>(graphicsFacade);
+	shared_ptr<DirectXProxyMock> direct_x_proxy = make_shared<DirectXProxyMock>();
+	shared_ptr<DirectXDeviceFactory> direct_x_device_factory = make_shared<DirectXDeviceFactory>(direct_x_proxy);
+	shared_ptr<App> app = make_shared<App>(direct_x_device_factory);
 };
 
 #define EXPECT_CHECK_DEBUG_LAYER_SUPPORT(library) \

@@ -1,12 +1,10 @@
 #pragma once
 
-#include "gmock/gmock.h"
+#include "DirectXProxy.h"
 
-#include "../../windows-runtime/Graphics/DirectXFactory.h"
-
-class DirectXFactoryMock : public DirectXFactory {
+class DirectXProxyImpl : public DirectXProxy {
 public:
-	MOCK_METHOD(HRESULT, CreateDevice, (
+	virtual HRESULT CreateDevice(
 		IDXGIAdapter* p_adapter,
 		D3D_DRIVER_TYPE driver_type,
 		HMODULE software,
@@ -17,5 +15,6 @@ public:
 		ID3D11Device** device,
 		D3D_FEATURE_LEVEL* p_feature_level,
 		ID3D11DeviceContext** context
-	), (override));
+	) override;
+
 };

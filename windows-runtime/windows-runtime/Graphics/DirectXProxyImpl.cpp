@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "DirectXFactoryImpl.h"
+#include "DirectXProxyImpl.h"
 
 
-HRESULT DirectXFactoryImpl::CreateDevice(
+HRESULT DirectXProxyImpl::CreateDevice(
 	IDXGIAdapter* p_adapter,
 	D3D_DRIVER_TYPE driver_type,
 	HMODULE software,
