@@ -1,7 +1,7 @@
 #include "pch.h"
 
 #include "DirectXProxyMock.h"
-#include "../../windows-runtime/Graphics/DirectXDeviceFactory.h"
+#include "../../windows-runtime/Graphics/DirectXDeviceFactoryImpl.h"
 
 using ::testing::_;
 using ::testing::AtMost;
@@ -9,7 +9,7 @@ using ::testing::Return;
 
 struct DeviceFactoryTestSetup {
 	std::shared_ptr<DirectXProxyMock> direct_x_proxy = std::make_shared<DirectXProxyMock>();
-	std::shared_ptr<DirectXDeviceFactory> direct_x_device_factory = std::make_shared<DirectXDeviceFactory>(direct_x_proxy);
+	std::shared_ptr<DirectXDeviceFactory> direct_x_device_factory = std::make_shared<DirectXDeviceFactoryImpl>(direct_x_proxy);
 };
 
 #define EXPECT_CHECK_DEBUG_LAYER_SUPPORT(direct_x_proxy) \

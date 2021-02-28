@@ -111,6 +111,7 @@
     <ClInclude Include="App\AppAdapter.h" />
     <ClInclude Include="Graphics\DirectXDevice.h" />
     <ClInclude Include="Graphics\DirectXDeviceFactory.h" />
+    <ClInclude Include="Graphics\DirectXDeviceFactoryImpl.h" />
     <ClInclude Include="Graphics\DirectXProxy.h" />
     <ClInclude Include="Graphics\DirectXProxyImpl.h" />
     <ClInclude Include="pch.h" />
@@ -133,7 +134,7 @@
     <ClCompile Include="App\App.cpp" />
     <ClCompile Include="App\AppAdapter.cpp" />
     <ClCompile Include="Graphics\DirectXDevice.cpp" />
-    <ClCompile Include="Graphics\DirectXDeviceFactory.cpp" />
+    <ClCompile Include="Graphics\DirectXDeviceFactoryImpl.cpp" />
     <ClCompile Include="Graphics\DirectXProxyImpl.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pch.cpp">

@@ -10,17 +10,26 @@
     <ClCompile Include="..\windows-runtime\Graphics\DirectXDevice.cpp">
       <Filter>Dependencies</Filter>
     </ClCompile>
-    <ClCompile Include="..\windows-runtime\Graphics\DirectXDeviceFactory.cpp">
-      <Filter>Dependencies</Filter>
-    </ClCompile>
     <ClCompile Include="Tests\DeviceFactoryTests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
     <ClCompile Include="..\packages\gmock.1.10.0\lib\native\src\gtest\src\gtest_main.cc" />
+    <ClCompile Include="Tests\AppTests.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\windows-runtime\Graphics\DirectXDeviceFactoryImpl.cpp">
+      <Filter>Dependencies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="Tests\DirectXProxyMock.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="Tests\pch.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="Tests\ID3D11Device3Mock.h">
       <Filter>Tests</Filter>
     </ClInclude>
   </ItemGroup>

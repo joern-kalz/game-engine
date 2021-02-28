@@ -8,8 +8,8 @@
 class DirectXDevice {
 public:
     DirectXDevice(
-        std::shared_ptr< winrt::com_ptr<ID3D11Device3>> device,
-        std::shared_ptr< winrt::com_ptr<ID3D11DeviceContext3>> context,
+        std::shared_ptr<winrt::com_ptr<ID3D11Device3>> device,
+        std::shared_ptr<winrt::com_ptr<ID3D11DeviceContext3>> context,
         D3D_FEATURE_LEVEL feature_level
     );
 

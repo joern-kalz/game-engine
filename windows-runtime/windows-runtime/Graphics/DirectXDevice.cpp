@@ -32,6 +32,7 @@ void DirectXDevice::TrimResourcesOnSuspending()
 
 void DirectXDevice::LoadBasicResources(std::function<void()>)
 {
+    CreateSampler();
 }
 
 void DirectXDevice::LoadTextures(wchar_t const**, std::function<void()>)
@@ -59,9 +60,9 @@ void DirectXDevice::CreateSampler()
     sampDesc.MinLOD = 0;
     sampDesc.MaxLOD = FLT_MAX;
 
-    winrt::check_hresult(
-        (*device_)->CreateSamplerState(&sampDesc, sampler_.put())
-    );
+    //winrt::check_hresult(
+    (*device_)->CreateSamplerState(&sampDesc, sampler_.put());
+    //);
 }
 
 void DirectXDevice::CreateVertexBuffer()

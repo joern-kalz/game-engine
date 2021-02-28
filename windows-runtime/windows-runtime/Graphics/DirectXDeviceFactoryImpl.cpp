@@ -1,12 +1,12 @@
 #include "pch.h"
-#include "DirectXDeviceFactory.h"
+#include "DirectXDeviceFactoryImpl.h"
 
-DirectXDeviceFactory::DirectXDeviceFactory(std::shared_ptr<DirectXProxy> direct_x_proxy) :
+DirectXDeviceFactoryImpl::DirectXDeviceFactoryImpl(std::shared_ptr<DirectXProxy> direct_x_proxy) :
     direct_x_proxy_(direct_x_proxy)
 {
 }
 
-std::shared_ptr<DirectXDevice> DirectXDeviceFactory::CreateDirectXDevice()
+std::shared_ptr<DirectXDevice> DirectXDeviceFactoryImpl::CreateDirectXDevice()
 {
     UINT creationFlags = 0;
 
@@ -26,7 +26,7 @@ std::shared_ptr<DirectXDevice> DirectXDeviceFactory::CreateDirectXDevice()
     return std::make_shared<DirectXDevice>(result.device, result.context, result.feature_level);
 }
 
-bool DirectXDeviceFactory::IsDebugLayerSupported()
+bool DirectXDeviceFactoryImpl::IsDebugLayerSupported()
 {
     HRESULT hr = direct_x_proxy_->CreateDevice(
         nullptr,
@@ -44,7 +44,7 @@ bool DirectXDeviceFactory::IsDebugLayerSupported()
     return SUCCEEDED(hr);
 }
 
-DirectXDeviceFactory::CreateDeviceResult DirectXDeviceFactory::CreateDevice(D3D_DRIVER_TYPE type, UINT flags)
+DirectXDeviceFactoryImpl::CreateDeviceResult DirectXDeviceFactoryImpl::CreateDevice(D3D_DRIVER_TYPE type, UINT flags)
 {
     D3D_FEATURE_LEVEL featureLevels[] =
     {
