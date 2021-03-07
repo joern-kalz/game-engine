@@ -10,6 +10,9 @@
 
 #include <unknwn.h>
 #include <windows.h>
+
+#undef X64
+
 #include <winrt/Windows.Foundation.h>
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.ApplicationModel.Core.h>
