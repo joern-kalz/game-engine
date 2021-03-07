@@ -37,7 +37,7 @@ struct ViewTestSetup {
 	std::shared_ptr<PainterMock> painter_mock;
 };
 
-ViewTestSetup createViewTestSetup() {
+ViewTestSetup CreateViewTestSetup() {
 	ViewTestSetup setup;
 
 	setup.graphics_device_container_mock = std::make_shared<GraphicsDeviceContainerMock>();
@@ -53,17 +53,38 @@ ViewTestSetup createViewTestSetup() {
 	return setup;
 }
 
-void expectResetDevice(ViewTestSetup setup) {
-	EXPECT_CALL(*setup.double_buffer_mock, Create()).WillRepeatedly(Return(true));
-	EXPECT_CALL(*setup.double_buffer_mock, Destroy());
-	EXPECT_CALL(*setup.graphics_device_container_mock, Create);
+void ExpectCreateResourcesOfPainter(ViewTestSetup setup) {
 	EXPECT_CALL(*setup.painter_mock, CreateResources).WillOnce([]() -> winrt::Windows::Foundation::IAsyncAction {
 		co_return;
 	});
 }
 
+void ExpectResetDevice(ViewTestSetup setup) {
+	EXPECT_CALL(*setup.double_buffer_mock, Create()).WillRepeatedly(Return(true));
+	EXPECT_CALL(*setup.double_buffer_mock, Destroy());
+	EXPECT_CALL(*setup.graphics_device_container_mock, Create);
+	ExpectCreateResourcesOfPainter(setup);
+}
+
+void ExpectFrameAndSucceed(ViewTestSetup setup) {
+	EXPECT_CALL(*setup.double_buffer_mock, StartFrame());
+	EXPECT_CALL(*setup.double_buffer_mock, FinishFrame())
+		.WillOnce(Return(true));
+}
+
+void ExpectFrameAndFail(ViewTestSetup setup) {
+	EXPECT_CALL(*setup.double_buffer_mock, StartFrame());
+	EXPECT_CALL(*setup.double_buffer_mock, FinishFrame())
+		.WillOnce(Return(false));
+}
+
+void CreatePainterResources(ViewTestSetup setup) {
+	ExpectCreateResourcesOfPainter(setup);
+	setup.view->OnLoad();
+}
+
 TEST(ViewTest, ShouldCreateDeviceOnInitialization) {
-	ViewTestSetup setup = createViewTestSetup();
+	ViewTestSetup setup = CreateViewTestSetup();
 	EXPECT_CALL(*setup.graphics_device_container_mock, Create);
 
 	setup.view->OnInitialize();
@@ -72,7 +93,7 @@ TEST(ViewTest, ShouldCreateDeviceOnInitialization) {
 TEST(ViewTest, ShouldInitializeDoubleBufferOnSetWindow) {
 	using CoreWindow = winrt::Windows::UI::Core::CoreWindow;
 	
-	ViewTestSetup setup = createViewTestSetup();
+	ViewTestSetup setup = CreateViewTestSetup();
 	CoreWindow const* window_mock = reinterpret_cast<CoreWindow const*>(123);
 	EXPECT_CALL(*setup.double_buffer_mock, SetWindow(window_mock));
 	EXPECT_CALL(*setup.double_buffer_mock, Create());
@@ -81,23 +102,21 @@ TEST(ViewTest, ShouldInitializeDoubleBufferOnSetWindow) {
 }
 
 TEST(ViewTest, ShouldCreatePainterResourcesOnLoad) {
-	ViewTestSetup setup = createViewTestSetup();
-	EXPECT_CALL(*setup.painter_mock, CreateResources).WillOnce([]() -> winrt::Windows::Foundation::IAsyncAction {
-		co_return;
-	});
+	ViewTestSetup setup = CreateViewTestSetup();
+	ExpectCreateResourcesOfPainter(setup);
 
 	setup.view->OnLoad();
 }
 
 TEST(ViewTest, ShouldTrimDeviceOnSuspending) {
-	ViewTestSetup setup = createViewTestSetup();
+	ViewTestSetup setup = CreateViewTestSetup();
 	EXPECT_CALL(*setup.graphics_device_container_mock, Trim);
 
 	setup.view->OnSuspending();
 }
 
 TEST(ViewTest, ShouldRecreateDoubleBufferOnResize) {
-	ViewTestSetup setup = createViewTestSetup();
+	ViewTestSetup setup = CreateViewTestSetup();
 	EXPECT_CALL(*setup.double_buffer_mock, Create())
 		.WillOnce(Return(true));
 
@@ -105,8 +124,8 @@ TEST(ViewTest, ShouldRecreateDoubleBufferOnResize) {
 }
 
 TEST(ViewTest, ShouldResetDeviceWhenDoubleBufferRecreateFails) {
-	ViewTestSetup setup = createViewTestSetup();
-	expectResetDevice(setup);
+	ViewTestSetup setup = CreateViewTestSetup();
+	ExpectResetDevice(setup);
 	EXPECT_CALL(*setup.double_buffer_mock, Create())
 		.WillOnce(Return(false))
 		.WillOnce(Return(true));
@@ -115,22 +134,33 @@ TEST(ViewTest, ShouldResetDeviceWhenDoubleBufferRecreateFails) {
 }
 
 TEST(ViewTest, ShouldPaintFrame) {
-	ViewTestSetup setup = createViewTestSetup();
-	EXPECT_CALL(*setup.double_buffer_mock, StartFrame());
-	EXPECT_CALL(*setup.painter_mock, Paint);
-	EXPECT_CALL(*setup.double_buffer_mock, FinishFrame())
-		.WillOnce(Return(true));
+	ViewTestSetup setup = CreateViewTestSetup();
+	ExpectFrameAndSucceed(setup);
+
+	setup.view->Paint();
+}
+
+TEST(ViewTest, ShouldNotInvokePainterIfPainterResourcesNotCreated) {
+	ViewTestSetup setup = CreateViewTestSetup();
+	ExpectFrameAndSucceed(setup);
+	EXPECT_CALL(*setup.painter_mock, Paint).Times(0);
+
+	setup.view->Paint();
+}
+
+TEST(ViewTest, ShouldInvokePainterIfPainterResourcesCreated) {
+	ViewTestSetup setup = CreateViewTestSetup();
+	ExpectFrameAndSucceed(setup);
+	EXPECT_CALL(*setup.painter_mock, Paint).Times(1);
+	CreatePainterResources(setup);
 
 	setup.view->Paint();
 }
 
 TEST(ViewTest, ShouldResetDeviceWhenFrameFails) {
-	ViewTestSetup setup = createViewTestSetup();
-	expectResetDevice(setup);
-	EXPECT_CALL(*setup.double_buffer_mock, StartFrame());
-	EXPECT_CALL(*setup.painter_mock, Paint);
-	EXPECT_CALL(*setup.double_buffer_mock, FinishFrame())
-		.WillOnce(Return(false));
+	ViewTestSetup setup = CreateViewTestSetup();
+	ExpectFrameAndFail(setup);
+	ExpectResetDevice(setup);
 
 	setup.view->Paint();
 }
