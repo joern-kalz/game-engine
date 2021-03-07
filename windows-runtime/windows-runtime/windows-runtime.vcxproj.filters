@@ -3,43 +3,79 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="App\App.cpp">
+    <ClCompile Include="AssetLoader\AssetLoaderImpl.cpp">
+      <Filter>AssetLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="App\AppImpl.cpp">
       <Filter>App</Filter>
     </ClCompile>
     <ClCompile Include="App\AppAdapter.cpp">
       <Filter>App</Filter>
     </ClCompile>
-    <ClCompile Include="Graphics\DirectXProxyImpl.cpp">
+    <ClCompile Include="Graphics\DoubleBufferImpl.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Graphics\DirectXDevice.cpp">
+    <ClCompile Include="Graphics\GraphicsDeviceContainerImpl.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Graphics\DirectXDeviceFactoryImpl.cpp">
+    <ClCompile Include="Graphics\GraphicsResourceFactoryImpl.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\TexturedRectanglePainter.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\ViewImpl.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="AssetLoader\AssetLoader.h">
+      <Filter>AssetLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetLoader\AssetLoaderImpl.h">
+      <Filter>AssetLoader</Filter>
+    </ClInclude>
     <ClInclude Include="App\App.h">
       <Filter>App</Filter>
     </ClInclude>
     <ClInclude Include="App\AppAdapter.h">
       <Filter>App</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics\DirectXProxy.h">
+    <ClInclude Include="App\AppImpl.h">
+      <Filter>App</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\DoubleBuffer.h">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics\DirectXProxyImpl.h">
+    <ClInclude Include="Graphics\DoubleBufferImpl.h">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics\DirectXDevice.h">
+    <ClInclude Include="Graphics\GraphicsDeviceContainer.h">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics\DirectXDeviceFactory.h">
+    <ClInclude Include="Graphics\GraphicsDeviceContainerImpl.h">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics\DirectXDeviceFactoryImpl.h">
+    <ClInclude Include="Graphics\GraphicsDeviceProvider.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\GraphicsResourceFactory.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\GraphicsResourceFactoryImpl.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Painter.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\TexturedRectanglePainter.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\View.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\ViewImpl.h">
       <Filter>Graphics</Filter>
     </ClInclude>
   </ItemGroup>
@@ -72,6 +108,9 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="PropertySheet.props" />
+    <None Include="Shaders\TexturedTriangleHeader.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
@@ -92,5 +131,13 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{5d0676b3-b148-4d7e-b99e-2024cca7a4d7}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shaders\TexturedTriangleVertexShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\TexturedTrianglePixelShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

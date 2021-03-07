@@ -1,30 +1,23 @@
 #pragma once
 
-#include <memory>
-
-#include "../Graphics/DirectXDeviceFactory.h"
-
-using namespace std;
-
 class App
 {
 public:
 	struct PointerEvent { float x; float y; };
 
-	App(shared_ptr<DirectXDeviceFactory> direct_x_device_factory);
+	virtual ~App() {}
 
-	void OnInitialize();
-	void OnLoad();
-	void OnSuspending();
-	void OnResuming();
-	void OnPointerPressed(PointerEvent pointer_event);
-	void OnPointerMoved(PointerEvent pointer_event);
-	void OnPointerReleased(PointerEvent pointer_event);
+	virtual void OnInitialize() = 0;
+	virtual void OnSetWindow(winrt::Windows::UI::Core::CoreWindow const* window) = 0;
+	virtual void OnLoad() = 0;
+	virtual void OnRun() = 0;
 
-private:
-	shared_ptr<DirectXDeviceFactory> direct_x_device_factory_;
-	shared_ptr<DirectXDevice> direct_x_device_;
-	bool resources_loaded_;
-	bool textures_loaded_;
+	virtual void OnSuspending() = 0;
+	virtual void OnResuming() = 0;
+
+	virtual void OnResize() = 0;
+	virtual void OnPointerPressed(PointerEvent pointer_event) = 0;
+	virtual void OnPointerMoved(PointerEvent pointer_event) = 0;
+	virtual void OnPointerReleased(PointerEvent pointer_event) = 0;
 };
 

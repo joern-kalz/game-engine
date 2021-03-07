@@ -1,8 +1,16 @@
 #include "pch.h"
 #include "AppAdapter.h"
 
-AppAdapter::AppAdapter(shared_ptr<App> app) :
-    app_(app)
+using namespace winrt::Windows::ApplicationModel;
+using namespace winrt::Windows::ApplicationModel::Activation;
+using namespace winrt::Windows::ApplicationModel::Core;
+using namespace winrt::Windows::Foundation::Numerics;
+using namespace winrt::Windows::UI::Core;
+
+AppAdapter::AppAdapter(App& app) :
+    app_(app),
+    closed_(false),
+    visible_(true)
 {
 }
 
@@ -13,67 +21,76 @@ IFrameworkView AppAdapter::CreateView()
 
 void AppAdapter::Initialize(CoreApplicationView const& application_view)
 {
-    application_view.Activated({ this, &AppAdapter::OnActivated });
-    CoreApplication::Suspending({ this, &AppAdapter::OnSuspending });
-    CoreApplication::Resuming({ this, &AppAdapter::OnResuming });
+    application_view.Activated([&](CoreApplicationView const&, IActivatedEventArgs const&) {
+        CoreWindow::GetForCurrentThread().Activate();
+    });
+    CoreApplication::Suspending([&](IInspectable const&, SuspendingEventArgs const& args) -> winrt::fire_and_forget {
+        auto lifetime = get_strong();
+        SuspendingDeferral deferral = args.SuspendingOperation().GetDeferral();
+        co_await winrt::resume_background();
+        app_.OnSuspending();
+        deferral.Complete();
+    });
+    CoreApplication::Resuming([&](IInspectable const&, IInspectable const&) {
+        app_.OnResuming();
+    });
 
-    app_->OnInitialize();
+    app_.OnInitialize();
 }
 
 void AppAdapter::SetWindow(CoreWindow const& window)
 {
-    window.PointerReleased([&](IInspectable const&, PointerEventArgs const& args) {
-        app_->OnPointerReleased(ConvertToPointerEvent(args));
+    window.PointerPressed([&](IInspectable const&, PointerEventArgs const& args) {
+        app_.OnPointerPressed(ConvertToPointerEvent(args));
     });
     window.PointerMoved([&](IInspectable const&, PointerEventArgs const& args) {
-        app_->OnPointerMoved(ConvertToPointerEvent(args));
+        app_.OnPointerMoved(ConvertToPointerEvent(args));
     });
     window.PointerReleased([&](IInspectable const&, PointerEventArgs const& args) {
-        app_->OnPointerReleased(ConvertToPointerEvent(args));
+        app_.OnPointerReleased(ConvertToPointerEvent(args));
     });
+    window.SizeChanged([&](CoreWindow const&, WindowSizeChangedEventArgs const&) {
+        app_.OnResize();
+    });
+    window.VisibilityChanged([&](CoreWindow const&, VisibilityChangedEventArgs const& args) {
+        visible_ = args.Visible();
+    });
+    window.Closed([&](CoreWindow const&, CoreWindowEventArgs const&) {
+        closed_ = true;
+    });
+ 
+    using DisplayInformation = winrt::Windows::Graphics::Display::DisplayInformation;
+    DisplayInformation currentDisplayInformation{ DisplayInformation::GetForCurrentView() };
+
+    currentDisplayInformation.DpiChanged([&](DisplayInformation const&, IInspectable const&) {
+        app_.OnResize();
+    });
+    currentDisplayInformation.OrientationChanged([&](DisplayInformation const&, IInspectable const&) {
+        app_.OnResize();
+    });
+
+    app_.OnSetWindow(&window);
 }
 
-void AppAdapter::Load(hstring const&)
+void AppAdapter::Load(winrt::hstring const&)
 {
-    OnLoad();
+    app_.OnLoad();
 }
 
 void AppAdapter::Run()
 {
-    CoreWindow window = CoreWindow::GetForCurrentThread();
-    CoreDispatcher dispatcher = window.Dispatcher();
-    dispatcher.ProcessEvents(CoreProcessEventsOption::ProcessUntilQuit);
+    while (!closed_) {
+        if (visible_) {
+            CoreWindow::GetForCurrentThread().Dispatcher().ProcessEvents(CoreProcessEventsOption::ProcessAllIfPresent);
+            app_.OnRun();
+        } else {
+            CoreWindow::GetForCurrentThread().Dispatcher().ProcessEvents(CoreProcessEventsOption::ProcessOneAndAllPending);
+        }
+    }
 }
 
 void AppAdapter::Uninitialize()
 {
-}
-
-void AppAdapter::OnLoad()
-{
-    app_->OnLoad();
-}
-
-void AppAdapter::OnActivated(CoreApplicationView const&, IActivatedEventArgs const&)
-{
-    CoreWindow window = CoreWindow::GetForCurrentThread();
-    window.Activate();
-}
-
-winrt::fire_and_forget AppAdapter::OnSuspending(IInspectable const&, SuspendingEventArgs const& args)
-{
-    auto lifetime = get_strong();
-    SuspendingDeferral deferral = args.SuspendingOperation().GetDeferral();
-    co_await winrt::resume_background();
-
-    app_->OnSuspending();
-
-    deferral.Complete();
-}
-
-void AppAdapter::OnResuming(IInspectable const&, IInspectable const&)
-{
-    app_->OnResuming();
 }
 
 App::PointerEvent AppAdapter::ConvertToPointerEvent(PointerEventArgs args)

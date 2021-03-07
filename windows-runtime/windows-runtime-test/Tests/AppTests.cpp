@@ -1,35 +1,71 @@
 #include "pch.h"
 
-#include "ID3D11Device3Mock.h"
-#include "../../windows-runtime/App/App.h"
-#include "../../windows-runtime/Graphics/DirectXDeviceFactory.h"
+#include <memory>
+#include "../../windows-runtime/App/AppImpl.h"
 
-using ::testing::_;
-using ::testing::AtMost;
-using ::testing::Return;
-
-class DirectXDeviceFactoryStub : public DirectXDeviceFactory {
+class ViewMock : public View {
 public:
-	DirectXDeviceFactoryStub(std::shared_ptr<DirectXDevice> device) : device_(device) {}
-	virtual std::shared_ptr<DirectXDevice> CreateDirectXDevice() { return device_; }
-private:
-	std::shared_ptr<DirectXDevice> device_;
+	MOCK_METHOD(void, OnInitialize, (), (override));
+	MOCK_METHOD(void, OnSetWindow, (winrt::Windows::UI::Core::CoreWindow const* window), (override));
+	MOCK_METHOD(void, OnLoad, (), (override));
+	MOCK_METHOD(void, OnSuspending, (), (override));
+	MOCK_METHOD(void, OnResize, (), (override));
+	MOCK_METHOD(void, Paint, (), (override));
 };
 
 struct AppTestSetup {
-	ID3D11Device3Mock id3d11_device_3_mock;
-	std::shared_ptr<winrt::com_ptr<ID3D11Device3>> id3d11_device_3 = std::make_shared<winrt::com_ptr<ID3D11Device3>>();
-	std::shared_ptr<DirectXDevice> direct_x_device = std::make_shared<DirectXDevice>(id3d11_device_3, std::shared_ptr<winrt::com_ptr<ID3D11DeviceContext3>>(nullptr), D3D_FEATURE_LEVEL());
-	std::shared_ptr<DirectXDeviceFactory> direct_x_device_factory = std::make_shared<DirectXDeviceFactoryStub>(direct_x_device);
-	std::shared_ptr<App> app = std::make_shared<App>(direct_x_device_factory);
-	AppTestSetup() {
-		*id3d11_device_3->put() = &id3d11_device_3_mock;
-	}
+	std::shared_ptr<App> app;
+	std::shared_ptr<ViewMock> view_mock;
 };
 
-TEST(AppTest, ShouldCreateSamplerState) {
+AppTestSetup createAppTestSetup() {
 	AppTestSetup setup;
-	EXPECT_CALL(setup.id3d11_device_3_mock, CreateSamplerState(_, _));
+	setup.view_mock = std::make_shared<ViewMock>();
+	setup.app = std::make_shared<AppImpl>(*setup.view_mock);
+	return setup;
+}
+
+TEST(AppTest, ShouldInitializeView) {
+	AppTestSetup setup = createAppTestSetup();
+	EXPECT_CALL(*setup.view_mock, OnInitialize);
+
 	setup.app->OnInitialize();
+}
+
+TEST(AppTest, ShouldSetViewWindow) {
+	using CoreWindow = winrt::Windows::UI::Core::CoreWindow;
+
+	AppTestSetup setup = createAppTestSetup();
+	CoreWindow const* window_mock = reinterpret_cast<CoreWindow const*>(123);
+	EXPECT_CALL(*setup.view_mock, OnSetWindow(window_mock));
+
+	setup.app->OnSetWindow(window_mock);
+}
+
+TEST(AppTest, ShouldLoadView) {
+	AppTestSetup setup = createAppTestSetup();
+	EXPECT_CALL(*setup.view_mock, OnLoad());
+
 	setup.app->OnLoad();
+}
+
+TEST(AppTest, ShouldRunView) {
+	AppTestSetup setup = createAppTestSetup();
+	EXPECT_CALL(*setup.view_mock, Paint());
+
+	setup.app->OnRun();
+}
+
+TEST(AppTest, ShouldSuspendView) {
+	AppTestSetup setup = createAppTestSetup();
+	EXPECT_CALL(*setup.view_mock, OnSuspending());
+
+	setup.app->OnSuspending();
+}
+
+TEST(AppTest, ShouldResizeView) {
+	AppTestSetup setup = createAppTestSetup();
+	EXPECT_CALL(*setup.view_mock, OnResize());
+
+	setup.app->OnResize();
 }
