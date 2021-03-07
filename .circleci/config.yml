@@ -16,5 +16,8 @@ jobs:
          command: MSBuild.exe -p:Configuration=Release -p:Platform=x64 windows-runtime\windows-runtime\windows-runtime.vcxproj
          shell: cmd.exe
       - run:
+         command: MSBuild.exe -p:Configuration=Release -p:Platform=x64 windows-runtime\windows-runtime-test\windows-runtime-test.vcxproj
+         shell: cmd.exe
+      - run:
          command: windows-runtime\Release\windows-runtime-test.exe
          shell: cmd.exe
